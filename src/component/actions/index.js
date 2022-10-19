@@ -25,3 +25,7 @@ export const movieDetails = (id) => {
         });
     };
 };
+
+export const getAlert = (boolean) => {
+    return ({type: "GET_ALERT", payload:boolean})
+};

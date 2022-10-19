@@ -1,4 +1,5 @@
 const initialState = {
+    alert: false,
     movieFav:[],
     getMovies:[],
     movieDetails:{}
@@ -25,6 +26,11 @@ const reducer = (state=initialState, action) => {
             return {
                 ...state,
                 movieDetails : action.payload
+            }
+        case "GET_ALERT":
+            return {
+                ...state,
+                alert: action.payload
             }
         default:
             return state;

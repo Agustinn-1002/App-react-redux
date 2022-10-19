@@ -1,15 +1,16 @@
 import React, { useState , useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
-import {addMoviesFav, getMovies, movieDetails} from '../actions'
+import {addMoviesFav, getAlert, getMovies, movieDetails} from '../actions'
 
 const Buscador = () => {
     
     const dispatch = useDispatch()
     const data = useSelector(state => state.getMovies)
     const favState = useSelector(state => state.movieFav)
+    const alert = useSelector(state => state.alert)
     const [title , setTitle] = useState('');
-    const [alert , setAlert] = useState(false);
+
     
     const handleChange = (event) => {
         setTitle(event.target.value);
@@ -22,12 +23,12 @@ const Buscador = () => {
 
     useEffect(() => {
         setTimeout(() => {
-            setAlert(false);
-        }, 2000);
+            dispatch(getAlert(false));
+        }, 3500);
     }, [favState]);
 
     return (
-        <div style={{transition: 'all 3s'}}>
+        <div>
             <form onSubmit={(e) => handleSubmit(e)}>
                 <h2>Buscador</h2>
                 <label>Película: </label>
@@ -40,12 +41,12 @@ const Buscador = () => {
                         <Link to={`/movie/${movie.imdbID}`} onClick={()=>dispatch(movieDetails(movie.imdbID))}>{movie.Title}</Link>
                         <button onClick={() => {
                             dispatch(addMoviesFav({title: movie.Title,id:movie.imdbID}));
-                            setAlert(true);
+                            dispatch(getAlert(true));
                         }}>Add +</button>
                     </li>
                 )}
             </ul>
-            <h3 style={{transition: 'all 3s'}} className={alert ? 'alertIn' : 'alertOut'}>Agregado a Favoritos</h3>
+            <h3 style={{transition: 'all 1s ease'}} className={alert ? 'alertIn' : 'alertOut'}>Agregado a Favoritos</h3>
         </div>
     )
 }

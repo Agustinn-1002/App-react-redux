@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {useSelector , useDispatch} from 'react-redux'
 import { Link } from "react-router-dom";
-import { movieDetails, removeMoviesFav } from "../actions";
+import { getAlert, movieDetails, removeMoviesFav } from "../actions";
 
 const Fav = () => {
-    const [alert , setAlert] = useState(false);
     const data = useSelector(state => state.movieFav)
+    const alert = useSelector(state => state.alert)
     const dispatch = useDispatch();
 
     useEffect(() => {
         setTimeout(() => {
-            setAlert(false);
-        }, 2000);
+            dispatch(getAlert(false));
+        }, 3000);
     }, [data]);
 
     return (
@@ -21,16 +21,16 @@ const Fav = () => {
                 {
                     data && data.map(movie => 
                         <li key={movie.id}>
-                            <Link to={`/movie/${movie.id}`} onClick={()=>dispatch(movieDetails(movie.imdbID))}>{movie.title}</Link>
+                            <Link to={`/movie/${movie.id}`} onClick={()=>dispatch(movieDetails(movie.id))}>{movie.title}</Link>
                             <button onClick={() => {
                                 dispatch(removeMoviesFav(movie.id))
-                                setAlert(true);
+                                dispatch(getAlert(true));
                                 }}>X</button>
                         </li>    
                     )
                 }
             </ul>
-            <h3 style={{transition: 'all 3s'}} className={alert ? 'alertIndelete' : 'alertOut'}>Eliminado</h3>
+            <h3 style={{transition: 'all 1s ease'}} className={alert ? 'alertIndelete' : 'alertOut'} >Eliminado</h3>
         </div>
     )
 }
